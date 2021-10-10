@@ -9,6 +9,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Movie extends Model
 {
     use HasFactory, SoftDeletes;
-    //public function getNameAttribute()
+
     protected $date = ['deleted_at'];
+    protected $casts = [
+        'year' => 'integer',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+//    public function getDateAttribute(){
+//        return
+//    }
+//    protected $attributes = [
+//        'poster' => null,
+//        'synopsys' => null,
+//    ];
 }
+

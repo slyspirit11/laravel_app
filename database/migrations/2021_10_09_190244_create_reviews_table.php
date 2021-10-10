@@ -16,8 +16,9 @@ class CreateReviewsTable extends Migration
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('movie_id')->nullable()->default(null);
-            $table->date('date');
+            $table->datetime('published_at')->nullable();
             $table->text('content');
+            $table->unsignedTinyInteger('rating');
             $table->softDeletes();
             $table->timestamps();
             $table->foreign('movie_id')->references('id')->on('movies');
@@ -31,7 +32,7 @@ class CreateReviewsTable extends Migration
      */
     public function down()
     {
-        Schema::table('movies', function (Blueprint $table) {
+        Schema::table('reviews', function (Blueprint $table) {
             $table->dropSoftDeletes();
         });
     }

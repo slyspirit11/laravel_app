@@ -9,5 +9,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Review extends Model
 {
     use HasFactory, SoftDeletes;
+
     protected $date = ['deleted_at'];
+    protected $casts = [
+        'rating' => 'integer',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
 }

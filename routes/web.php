@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Route;
 //    return view('welcome');
 //});
 
+//Route::get('/heart', 'App\Http\Controllers\MovieController@heart');
 
-Route::get('/rain', 'App\Http\Controllers\FirstController@rain');
-Route::get('/heart', 'App\Http\Controllers\FirstController@heart');
+Route::get('/', 'App\Http\Controllers\MovieController@index');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
