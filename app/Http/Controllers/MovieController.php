@@ -30,34 +30,13 @@ destroy. Реализуйте соответствующие пути в routes/
         $movies = Movie::all();
         return view('update', compact('movies'));
     }
-    public function show(){
-        $movies = Movie::all();
-        return view('show', compact('movies'));
+    public function show(Movie $movie){
+        return view('modal_content', [
+            'currentMovie' => $movie,
+        ]);
     }
     public function destroy(){
         $movies = Movie::all();
         return view('destroy', compact('movies'));
-    }
-    //------------------------------------------------------------
-    public function rain()
-    {
-        $tears = 'Go to hell from Islandalia';
-        return view('rainman', data:[
-            'hey' => $tears,
-        ]);
-    }
-    public function heart()
-    {
-        $drips = 'Make a pie, please, please, please';
-        $words = [
-            'Word1',
-            'Word2',
-            'Word3',
-            'Word919'
-        ];
-        return view('hearts', data:[
-            'wow' => $drips,
-            'words' => $words,
-        ]);
     }
 }

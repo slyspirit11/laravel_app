@@ -16785,5 +16785,16 @@ textarea.form-control-lg {
 }
 
 .container {
-  background-color: #ffffff;
+  background-color: inherit;
+}
+
+.card {
+  width: 60rem;
+}
+.card .card-body p {
+  text-overflow: ellipsis;
+}
+.card .card-img-top {
+  width: 100%;
+  height: 100%;
 }

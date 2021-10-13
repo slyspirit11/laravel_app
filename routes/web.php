@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MovieController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,9 +18,10 @@ use Illuminate\Support\Facades\Route;
 //    return view('welcome');
 //});
 
-//Route::get('/heart', 'App\Http\Controllers\MovieController@heart');
 
 Route::get('/', 'App\Http\Controllers\MovieController@index');
+Route::get('/movies/{movie}', [MovieController::class, 'show']);
+Route::get('/movies/create', [MovieController::class, 'create']);
 
 Auth::routes();
 
