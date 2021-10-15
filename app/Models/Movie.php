@@ -11,6 +11,7 @@ class Movie extends Model
     use HasFactory, SoftDeletes;
 
     protected $date = ['deleted_at'];
+    protected $guarded = ['id'];
     protected $casts = [
         'year' => 'integer',
         'created_at' => 'datetime',

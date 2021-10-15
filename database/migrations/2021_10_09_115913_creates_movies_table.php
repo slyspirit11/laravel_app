@@ -15,11 +15,11 @@ class CreatesMoviesTable extends Migration
     {
         Schema::create('movies', function (Blueprint $table) {
             $table->id();
-            $table->binary('poster')->nullable()->default(null);
-            $table->string('name', 50);
+            $table->string('title', 50);
             $table->string('director', 50);
             $table->integer('year')->unsigned();
-            $table->string('synopsys', 300)->nullable()->default(null);
+            $table->string('synopsys', 1000)->nullable()->default(null);
+            $table->string('poster_path', 300)->nullable()->default(null);
             $table->softDeletes();
             $table->timestamps();
         });

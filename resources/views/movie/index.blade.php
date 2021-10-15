@@ -1,17 +1,17 @@
 @include('layout.header')
-@include('navbar')
+@include('movie.navbar')
 @forelse($movies as $movie)
     <div class="container d-flex justify-content-center">
         <div class="card mb-3">
             <div class="row п-0">
                 <div class="col-md-2">
                     <img class="card-img-top"
-                         src="data:image/jpeg;base64,{{chunk_split(base64_encode($movie->poster))}}"
+                         src="{{'/images/movies/'.$movie->poster_path}}"
                          class="img-fluid rounded-start" alt="">
                 </div>
                 <div class="col-md-5">
                     <div class="card-body d-inline-block">
-                        <h3 class="card-title text-left fw-bold">{{$movie->name}}</h3>
+                        <h3 class="card-title text-left fw-bold">{{$movie->title}}</h3>
                         <h4 class="card-title text-left text-muted">Режиссёр: {{$movie->director}}</h4>
                         <h4 class="card-title text-left text-muted">Год: {{$movie->year}}</h4>
                         <a href="/movies/{{$movie->id}}" class="btn btn-light stretched-link ">...cпойлер</a>

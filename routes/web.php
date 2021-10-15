@@ -14,14 +14,13 @@ use App\Http\Controllers\MovieController;
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
-
-
-Route::get('/', 'App\Http\Controllers\MovieController@index');
+Route::get('/', [MovieController::class, 'index']);
 Route::get('/movies/{movie}', [MovieController::class, 'show']);
-Route::get('/movies/create', [MovieController::class, 'create']);
+Route::get('/create', [MovieController::class, 'create']);
+Route::post('/', [MovieController::class, 'store']);
+Route::get('/movies/{movie}/edit', [MovieController::class, 'edit']);
+Route::put('/movies/{movie}', [MovieController::class, 'update']);
+Route::delete('/movies/{movie}', [MovieController::class, 'destroy']);
 
 Auth::routes();
 

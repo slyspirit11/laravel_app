@@ -11,14 +11,14 @@
                     <div class="card mb-3">
                         <div class="row g-0">
                             <div class="col-md-3">
-                                <img class="card-img-top" src="data:image/jpeg;base64,{{chunk_split(base64_encode($currentMovie->poster))}}" class="img-fluid rounded-start" alt="">
+                                <img class="card-img-top" src="{{'/images/movies/'.$movie->poster_path}}" class="img-fluid rounded-start" alt="">
                             </div>
                             <div class="col-md-9">
                                 <div class="card-body d-inline-block">
-                                    <h3 class="card-title text-left fw-bold">{{$currentMovie->name}}</h3>
-                                    <h4 class="card-title text-left text-muted">Режиссёр: {{$currentMovie->director}}</h4>
-                                    <h4 class="card-title text-left text-muted">Год: {{$currentMovie->year}}</h4>
-                                    <p class="text-left">{{$currentMovie->synopsys}}</p>
+                                    <h3 class="card-title text-left fw-bold">{{$movie->title}}</h3>
+                                    <h4 class="card-title text-left text-muted">Режиссёр: {{$movie->director}}</h4>
+                                    <h4 class="card-title text-left text-muted">Год: {{$movie->year}}</h4>
+                                    <p class="text-left">{{$movie->synopsys}}</p>
                                 </div>
                             </div>
                         </div>
@@ -27,8 +27,15 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" id="btn-closeModal" data-bs-dismiss="modal">Закрыть</button>
-                <button type="button" class="btn btn-success">Редактировать</button>
-                <button type="button" class="btn btn-danger">Удалить</button>
+                <button type="button" class="btn btn-success position-relative">
+                    Редактировать
+                    <a href="/movies/{{$movie->id}}/edit" class="stretched-link"></a>
+                </button>
+                <form action="/movies/{{$movie->id}}" method="post">
+                    @method('DELETE')
+                    @csrf
+                    <button class="btn btn-danger">Удалить</button>
+                </form>
             </div>
         </div>
     </div>
