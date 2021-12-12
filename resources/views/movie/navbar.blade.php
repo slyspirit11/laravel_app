@@ -1,20 +1,20 @@
-<div class="container-fluid mb-5 fs-4">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03"
-                    aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Коллекция кинокартин</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/create">Добавить</a>
-                    </li>
-                </ul>
-            </div>
+<!--Nav-->
+<nav class="bg-gray-200 p-2 mt-0 sticky w-full z-10 top-0">
+    <div class="container mx-auto flex flex-wrap items-center h-20">
+        <div class="flex w-full md:w-1/2 justify-center md:justify-start font-extrabold">
+            <a class="text-black no-underline hover:text-gray-600" href="/">
+                <span class="text-2xl pl-2"><i class="em em-grinning"></i>Коллекция кинокартин</span>
+            </a>
+            <a class="text-black no-underline hover:text-gray-600" href="/create">
+                <span class="text-2xl pl-4"><i class="em em-grinning"></i>Добавить</span>
+            </a>
         </div>
-    </nav>
-</div>
+        <div class="flex w-full pt-2 content-center justify-between md:w-1/2 md:justify-end">
+            <ul class="list-reset flex justify-between flex-1 md:flex-none items-center">
+                <li class="mr-3">
+                    <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-4" href="/create"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

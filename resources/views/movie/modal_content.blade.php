@@ -1,54 +1,90 @@
 @include('layout.header')
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Кинокартина</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="container d-flex justify-content-center">
-                    <div class="card mb-3">
-                        <div class="row g-0">
-                            <div class="col-md-3">
-                                <img class="card-img-top" src="{{'/images/movies/'.$movie->poster_path}}" class="img-fluid rounded-start" alt="">
-                            </div>
-                            <div class="col-md-9">
-                                <div class="card-body d-inline-block">
-                                    <h3 class="card-title text-left fw-bold">{{$movie->title}}</h3>
-                                    <h4 class="card-title text-left text-muted">Режиссёр: {{$movie->director}}</h4>
-                                    <h4 class="card-title text-left text-muted">Год: {{$movie->year}}</h4>
-                                    <p class="text-left">{{$movie->synopsys}}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+<!-- This example requires Tailwind CSS v2.0+ -->
+<div id="movieModal" class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="movieModal" role="dialog"
+     aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+        <!-- This element is to trick the browser into centering the modal contents. -->
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        <div
+            class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle max-w-2xl w-full">
+            <div class="flex flex-col md:flex-row overflow-hidden bg-white rounded-lg shadow-xl mt-4 w-full mx-2">
+                <!-- media -->
+                <div class="w-auto w-1/3">
+                    <img class="h-full w-full object-cover" src="{{'/images/movies/'.$movie->poster_path}}"/>
+                </div>
+                <!-- content -->
+                <div class="w-full py-2 px-6 text-gray-800 flex flex-col relative">
+                    <h3 class="font-black text-3xl leading-tight truncate">{{$movie->title}}</h3>
+                    <h4 class="text-lg text-gray-800 uppercase font-bold mt-2">
+                        Режиссёр: {{$movie->director}}
+                    </h4>
+                    <h4 class="text-lg text-gray-800 uppercase font-bold mt-2">
+                        Год: {{$movie->year}}
+                    </h4>
+                    <p href="{{route('movies.show', ['user'=>$user->name, 'movie'=>$movie->id])}}"
+                       class="items-center text-base text-justify break-all">
+                        {{$movie->synopsys}}
+                    </p>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="btn-closeModal" data-bs-dismiss="modal">Закрыть</button>
-                <button type="button" class="btn btn-success position-relative">
-                    Редактировать
-                    <a href="/movies/{{$movie->id}}/edit" class="stretched-link"></a>
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button type="button" id="btn-close-modal"
+                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300
+                        shadow-sm px-4 py-2 bg-indigo-500 text-base font-medium text-gray-50
+                        hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2
+                        focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    <a href="{{route('movies', ['user'=>$user->name])}}" class="">Закрыть</a>
                 </button>
-                <form action="/movies/{{$movie->id}}" method="post">
-                    @method('DELETE')
-                    @csrf
-                    <button class="btn btn-danger">Удалить</button>
-                </form>
+                @can('update', $movie)
+                    <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300
+                        shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-gray-50
+                        hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2
+                        focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        <a href="{{route('movies.edit', ['user'=>$user->name, 'movie'=>$movie->id])}}"
+                           class="">Редактировать</a>
+                    </button>
+                @endcan
+                @can('delete', $movie)
+                    @if(!$movie->deleted_at)
+                        <form action="{{route('movies.destroy', ['user'=>$user->name, 'movie'=>$movie->id])}}" method="post">
+                            @method('DELETE')
+                            @csrf
+                            <button class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300
+                            shadow-sm px-4 py-2 bg-red-500 text-base font-medium text-gray-50
+                            hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2
+                            focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">Удалить
+                            </button>
+                        </form>
+                    @endif
+                @endcan
+                @can('forceDelete', $movie)
+                    <form action="{{route('movies.forceDelete', ['user'=>$user->name, 'movie'=>$movie->id])}}" method="post">
+                        @method('DELETE')
+                        @csrf
+                        <button class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300
+                            shadow-sm px-4 py-2 bg-red-500 text-base font-medium text-gray-50
+                            hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2
+                            focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">Force delete
+                        </button>
+                    </form>
+                @endcan
+                @can('restore', $movie)
+                    @if($movie->deleted_at)
+                        <form action="{{route('movies.restore', ['user'=>$user->name, 'movie'=>$movie->id])}}" method="post">
+                            @method('PUT')
+                            @csrf
+                            <button class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300
+                            shadow-sm px-4 py-2 bg-yellow-400 text-base font-medium text-gray-50
+                            hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2
+                            focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">Восстановить
+                            </button>
+                        </form>
+                    @endif
+                @endcan
             </div>
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function(){
-        var modal = $("#exampleModal");
-        modal.modal('toggle');
-        modal.on('hidden.bs.modal', function () {
-            window.location.href='/';
-        })
-        $("#btn-closeModal").click(function () {
-        })
-    });
-</script>
 @include('layout.footer')

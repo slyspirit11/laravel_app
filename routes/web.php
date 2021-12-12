@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MovieController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,15 +13,23 @@ use App\Http\Controllers\MovieController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::middleware('auth')->group(function () {
+    Route::get('/users/{user:name}/movies/', [MovieController::class, 'index'])->name('movies');
+    Route::get('/users/{user:name}/movies/{movie}', [MovieController::class, 'show'])->name('movies.show');
+    Route::get('/movies/create/{user?}', [MovieController::class, 'create'])->name('movies.create');
+    Route::post('/', [MovieController::class, 'store'])->name('movies.store');
+    Route::get('/users/{user:name}/movies/{movie}/edit', [MovieController::class, 'edit'])->name('movies.edit');
+    Route::put('/users/{user:name}/movies/{movie}', [MovieController::class, 'update'])->name('movies.update');
+    Route::delete('/users/{user:name}/movies/{movie}/delete', [MovieController::class, 'destroy'])->name('movies.destroy');
+    Route::delete('/users/{user:name}/movies/{movie}/forceDelete', [MovieController::class, 'forceDelete'])->name('movies.forceDelete');
+    Route::put('/users/{user:name}/movies/{movie}/restore', [MovieController::class, 'restore'])->name('movies.restore');
+    Route::bind('movie', function ($id) {
+        return \App\Models\Movie::withTrashed()->find($id);
+    });
+});
 
-Route::get('/', [MovieController::class, 'index']);
-Route::get('/movies/{movie}', [MovieController::class, 'show']);
-Route::get('/create', [MovieController::class, 'create']);
-Route::post('/', [MovieController::class, 'store']);
-Route::get('/movies/{movie}/edit', [MovieController::class, 'edit']);
-Route::put('/movies/{movie}', [MovieController::class, 'update']);
-Route::delete('/movies/{movie}', [MovieController::class, 'destroy']);
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+require __DIR__ . '/auth.php';

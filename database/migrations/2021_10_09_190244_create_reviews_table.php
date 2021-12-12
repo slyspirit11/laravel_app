@@ -15,13 +15,13 @@ class CreateReviewsTable extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('movie_id')->nullable()->default(null);
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('movie_id')->constrained();
             $table->datetime('published_at')->nullable();
             $table->text('content');
-            $table->unsignedTinyInteger('rating');
+            $table->unsignedTinyInteger('rating')->nullable();
             $table->softDeletes();
             $table->timestamps();
-            $table->foreign('movie_id')->references('id')->on('movies');
         });
     }
 

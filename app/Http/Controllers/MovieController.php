@@ -3,50 +3,92 @@
 namespace App\Http\Controllers;
 
 use App\Models\Movie;
+use App\Models\User;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Intervention\Image\Facades\Image;
 
 class MovieController extends Controller
 {
-    /*Реализуйте контроллер с действиями index, create, store, edit, update, show,
-destroy. Реализуйте соответствующие пути в routes/web.php. Правила
-именования.*/
-    public function index()
+
+    public function index(User $user)
     {
-        $movies = Movie::all();
-        return view('movie.index', compact('movies'));
+        if (Gate::allows('show-trashed')) {
+            $movies = Movie::withTrashed()->where('user_id', $user->id)->get();
+        } else {
+            $movies = Movie::all()->where('user_id', '===', $user->id);
+        }
+        return view('movie.index', compact('movies', 'user'));
     }
 
-    public function create()
+    public function create(User $user)
     {
-        return view('movie.create');
+        if ($user->can('create', Movie::class)) {
+            return view('movie.create');
+        }
     }
 
     public function store(Request $request)
     {
         $validated = $this->getValidatedData();
-        $poster = $validated['poster'];
-        if (isset($poster)) {
-            $extension = $poster->getClientOriginalExtension();
-            $filename = time() . '.' . $extension;
-            $poster->move('images/movies/', $filename);
-            Image::make(public_path('images/movies/' . $filename))->fit(500, 800)->save();
-            $validated['poster_path'] = $filename;
-        }
-        unset($validated['poster']);
+        $validated = $this->addPosterPathAttribute($validated);
+        $validated['user_id'] = Auth::id();
         Movie::create($validated);
-        return redirect('/');
+        return redirect(route('movies', ['user' => Auth::user()->name]));
     }
 
-    public function edit(Movie $movie)
+    public function edit(User $user, Movie $movie)
     {
-        return view('movie.edit', compact('movie'));
+        return view('movie.edit', compact('user', 'movie'));
     }
 
-    public function update(Movie $movie)
+    public function update(User $user, Movie $movie)
     {
         $validated = $this->getValidatedData();
-        $poster = $validated['poster'];
+        $validated = $this->addPosterPathAttribute($validated);
+        $validated['user_id'] = $user->id;
+        $movie->update($validated);
+        return redirect(route('movies.show', ['user' => $user->name, 'movie' => $movie->id]));
+    }
+
+    public function show(User $user, Movie $movie)
+    {
+        return view('movie.modal_content', compact('user', 'movie'));
+    }
+
+    public function destroy(User $user, Movie $movie)
+    {
+        if (Auth::user()->can('delete', $movie)) {
+            $movie->delete();
+        }
+        return redirect(route('movies', ['user' => $user->name, 'movie' => $movie->id]));
+    }
+
+    public function forceDelete(User $user, Movie $movie)
+    {
+        if (Auth::user()->can('forceDelete', $movie)){
+            $movie->forceDelete();
+        }
+        return redirect(route('movies', ['user' => $user->name, 'movie' => $movie->id]));
+    }
+
+    public function restore(User $user, Movie $movie)
+    {
+        if (Auth::user()->can('restore', $movie)){
+            $movie->restore();
+        }
+        return redirect(route('movies', ['user' => $user->name]));
+    }
+
+    protected function addPosterPathAttribute(array $validated)
+    {
+        $poster = null;
+        if (array_key_exists('poster', $validated)) {
+            $poster = $validated['poster'];
+        }
         if (isset($poster)) {
             $extension = $poster->getClientOriginalExtension();
             $filename = time() . '.' . $extension;
@@ -55,22 +97,11 @@ destroy. Реализуйте соответствующие пути в routes/
             $validated['poster_path'] = $filename;
         }
         unset($validated['poster']);
-        $movie->update($validated);
-        return redirect('/movies/'.$movie->id);
+        return $validated;
     }
 
-    public function show(Movie $movie)
+    protected function getValidatedData()
     {
-        return view('movie.modal_content', compact('movie'));
-    }
-
-    public function destroy(Movie $movie)
-    {
-        $movie->delete();
-        return redirect('/');
-    }
-
-    protected function getValidatedData(){
         return request()->validate([
             'title' => ['required'],
             'director' => ['required'],
