@@ -18,6 +18,9 @@
                     <x-nav-link :href="route('movies', ['user'=>Auth::user()->name])" :active="request()->routeIs('movies')">
                         {{ __('Кинокартины') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('feed.show')" :active="request()->routeIs('feed.show')">
+                        {{ __('Лента') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -72,6 +75,9 @@
             <x-responsive-nav-link :href="route('movies', ['user'=>Auth::user()->name])" :active="request()->routeIs('movies')">
                 {{ __('Кинокартины') }}
             </x-responsive-nav-link>
+            <x-nav-link :href="route('feed.show')" :active="request()->routeIs('feed.show')">
+                {{ __('Лента') }}
+            </x-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->

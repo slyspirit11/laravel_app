@@ -3,16 +3,8 @@
         <x-slot name="header">
             <div>
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    @if($user->can('create', App\Models\Movie::class))
-                        <a href="{{route('movies.create', ['user'=>$user->id])}}"
-                           class="text-black no-underline hover:text-gray-600">
-                            <span class="text-xl pl-4"><i class="em em-grinning"></i>Добавить</span>
-                        </a>
-                    @endif
-                        <a href="{{route('movies', ['user'=>$user->name])}}"
-                       class="text-black no-underline hover:text-gray-600">
-                        <span class="text-xl pl-4"><i class="em em-grinning"></i>{{$user->name}}</span>
-                    </a>
+                    <x-add-movie-link :user="$user"></x-add-movie-link>
+                    <x-user-name-link :user="$user"></x-user-name-link>
                 </h2>
             </div>
         </x-slot>

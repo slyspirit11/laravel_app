@@ -16,6 +16,7 @@ class Review extends Model
         'rating' => 'integer',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'published_at' => 'datetime',
     ];
     public function user()
     {
