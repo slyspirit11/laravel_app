@@ -21,6 +21,9 @@
                     <x-nav-link :href="route('feed.show')" :active="request()->routeIs('feed.show')">
                         {{ __('Лента') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('clients.show')" :active="request()->routeIs('clients.show')">
+                        {{ __('Клиенты') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -77,6 +80,9 @@
             </x-responsive-nav-link>
             <x-nav-link :href="route('feed.show')" :active="request()->routeIs('feed.show')">
                 {{ __('Лента') }}
+            </x-nav-link>
+            <x-nav-link :href="route('clients.show')" :active="request()->routeIs('clients.show')">
+                {{ __('Клиенты') }}
             </x-nav-link>
         </div>
 

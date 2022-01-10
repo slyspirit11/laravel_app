@@ -27,6 +27,7 @@ class MovieController extends Controller
         if (Gate::authorize('create', Movie::class)) {
             return view('movie.create', compact('user'));
         }
+        return response(403);
     }
 
     public function store()
@@ -39,6 +40,7 @@ class MovieController extends Controller
             Movie::create($validated);
             return redirect(route('movies', ['user' => Auth::user()->name]));
         }
+        return response(403);
     }
 
     public function edit(User $user, Movie $movie)
@@ -46,6 +48,7 @@ class MovieController extends Controller
         if (Gate::authorize('update', $movie)) {
             return view('movie.edit', compact('user', 'movie'));
         }
+        return response(403);
     }
 
     public function update(User $user, Movie $movie)
@@ -56,6 +59,7 @@ class MovieController extends Controller
             $movie->update($validated);
             return redirect(route('movies.show', ['user' => $user->name, 'movie' => $movie->id]));
         }
+        return response(403);
     }
 
     public function show(User $user, Movie $movie)
@@ -71,8 +75,9 @@ class MovieController extends Controller
                 $review->delete();
             }
             $movie->delete();
-            return redirect(route('movies', ['user' => $user->name, 'movie' => $movie->id]));
+            return redirect(route('movies', ['user' => $user->name]));
         }
+        return response(403);
     }
 
     public function forceDelete(User $user, Movie $movie)
@@ -83,8 +88,9 @@ class MovieController extends Controller
                 $review->forceDelete();
             }
             $movie->forceDelete();
-            return redirect(route('movies', ['user' => $user->name, 'movie' => $movie->id]));
+            return redirect(route('movies', ['user' => $user->name]));
         }
+        return response(403);
     }
 
     public function restore(User $user, Movie $movie)
@@ -97,6 +103,7 @@ class MovieController extends Controller
             $movie->restore();
             return redirect(route('movies', ['user' => $user->name]));
         }
+        return response(403);
     }
 
     protected function addPosterPathAttribute(array $validated)

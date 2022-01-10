@@ -15,6 +15,13 @@
             <span>Администратор</span>
             <span class="mt-2 text-black dark:text-gray-200 self-center">{{$user->is_admin ? '+' : '-'}}</span>
         </div>
+        <div
+            class="ml-12 flex flex-col text-gray-600 dark:text-gray-400">
+            <span>Токен</span>
+            <p class="mt-2 max-h-16 break-words max-w-md overflow-y-scroll text-black dark:text-gray-200 self-center">
+                {{Auth::user()->token}}
+            </p>
+        </div>
         @if(Auth::id() !== $user->id)
             <div class="ml-12 flex flex-col text-gray-600 dark:text-gray-400">
                 <span>Друг</span>

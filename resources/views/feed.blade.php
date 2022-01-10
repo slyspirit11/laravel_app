@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="pt-6 pb-12 bg-gray-300">
-        <x-slot name="header" class="hidden">
+        <x-slot name="header">
         </x-slot>
         @forelse($movies_and_reviews as $object)
             @if($object instanceof \App\Models\Movie)
@@ -28,7 +28,8 @@
                                         Удалённый объект
                                     </h4>
                                 @endif
-                                <a href="{{route('movies.show', ['user'=>$object->user->name, 'movie'=>$object->id])}}" class="self-start inline-flex items-center h-10 px-4 my-2 mr-2 text-base
+                                <a href="{{route('movies.show', ['user'=>$object->user->name, 'movie'=>$object->id])}}"
+                                   class="self-start inline-flex items-center h-10 px-4 my-2 mr-2 text-base
                          text-white transition-colors duration-300 bg-green-500 rounded-lg
                          focus:shadow-outline hover:bg-indigo-900">...подробнее</a>
                                 <h4 class="text-md text-gray-800 uppercase font-bold mt-2">
@@ -36,7 +37,7 @@
                                 </h4>
                                 <h4 class="text-md text-gray-800 uppercase font-bold mt-2">
                                     Добавил: <a class="text-indigo-600 normal-case hover:text-blue-500"
-                                        href={{route('movies', ['user'=>$object->user->name])}}>
+                                                href={{route('movies', ['user'=>$object->user->name])}}>
                                         {{$object->user->name}}
                                     </a>
                                 </h4>
@@ -50,7 +51,7 @@
                         <div class="flex flex-col flex-wrap -mx-3 mb-6">
                             <h2 class="px-4 pt-1 pb-1 text-lg">Комментарий от
                                 <a class="text-indigo-600 normal-case hover:text-blue-500"
-                                            href={{route('movies', ['user'=>$object->user->name])}}>
+                                   href={{route('movies', ['user'=>$object->user->name])}}>
                                     {{$object->user->name}}
                                 </a>
                                 к фильму
@@ -79,7 +80,5 @@
                 <h3 class="text-lg text-center font-extrabold">В ленте нет записей</h3>
             </div>
         @endforelse
-
     </div>
-
 </x-app-layout>

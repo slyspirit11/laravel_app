@@ -43,6 +43,11 @@ class HomeController extends Controller
         return view('feed', compact(['movies_and_reviews']));
     }
 
+    public function showClients(){
+        $clients = Auth::user()->clients;
+        return view('clients', compact(['clients']));
+    }
+
     public function befriendUser(User $user){
         Auth::user()->befriend($user);
         $user->acceptFriendRequest(Auth::user());

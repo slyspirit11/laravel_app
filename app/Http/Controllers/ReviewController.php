@@ -64,6 +64,5 @@ class ReviewController extends Controller
             'content' => ['required'],
             'rating' => ['required', 'min:1', 'max:10'],
         ]);
-
     }
 }

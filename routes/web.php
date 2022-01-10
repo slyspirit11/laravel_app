@@ -19,7 +19,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/users/{user:name}/movies/', [MovieController::class, 'index'])->name('movies');
     Route::get('/users/{user:name}/movies/{movie}', [MovieController::class, 'show'])->name('movies.show');
     Route::get('/movies/create/{user?}', [MovieController::class, 'create'])->name('movies.create');
-    Route::post('/', [MovieController::class, 'store'])->name('movies.store');
+    Route::post('/store', [MovieController::class, 'store'])->name('movies.store');
     Route::get('/users/{user:name}/movies/{movie}/edit', [MovieController::class, 'edit'])->name('movies.edit');
     Route::put('/users/{user:name}/movies/{movie}', [MovieController::class, 'update'])->name('movies.update');
     Route::delete('/users/{user:name}/movies/{movie}/delete', [MovieController::class, 'destroy'])->name('movies.destroy');
@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/users/{user:name}/movies/{movie}/review/store', [ReviewController::class, 'store'])->name('reviews.store');
     Route::get('/feed/show', [HomeController::class, 'showFeed'])->name('feed.show');
+    Route::get('/clients/show', [HomeController::class, 'showClients'])->name('clients.show');
     Route::post('/{user:name}/befriend', [HomeController::class, 'befriendUser'])->name('user.befriend');
     Route::post('{user:name}/unfriend', [HomeController::class, 'unfriendUser'])->name('user.unfriend');
 });
